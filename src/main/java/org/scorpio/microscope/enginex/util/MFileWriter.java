@@ -11,22 +11,6 @@ import java.util.Date;
 
 import org.scorpio.microscope.enginex.common.MThreadAIP;
 
-/**
- * <p>
- * Title:p6 Ĭ�ϵ��̸߳����ࡣ
- * </p>
- * <p>
- * <p>
- * Description:�����Լ����ñ��������࣬���ڸ߼�Ӧ�ã�û����֮ǰ�򲻿��޸ġ�
- * </p>
- * <p>
- * <p>
- * Company: �����ź��ǿƼ��ɷ����޹�˾
- * </p>
- *
- * @author ���ڼ�
- * @since��2012-11-23 ����11:30:48
- */
 public class MFileWriter implements MThreadAIP {
     private DateFormat fmt = new SimpleDateFormat("yyMMdd-HHmmss");
     private DecimalFormat ddf = new DecimalFormat("00000");

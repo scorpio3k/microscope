@@ -4,22 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * <p>
- * Title: �߳���Դ������
- * </p>
- * <p>
- * <p>
- * Description:
- * </p>
- * <p>
- * <p>
- * Company: �����ź��ǿƼ��ɷ����޹�˾
- * </p>
- *
- * @author ���ڼ�
- * @since��2009-8-11 ����11:51:41
- */
 public abstract class ThreadResources {
 
     private static final ThreadLocal resources = new ThreadLocal();

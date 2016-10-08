@@ -29,12 +29,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+
 import org.scorpio.microscope.enginex.common.MLogApi;
 import org.scorpio.microscope.enginex.common.MLogFileImpl;
 import org.scorpio.microscope.enginex.common.MLogQuery;
 import org.scorpio.microscope.enginex.core.MVersion;
 import org.scorpio.microscope.enginex.util.ServerInfo;
-import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+
 
 final public class GUI extends JFrame {
     private static final long serialVersionUID = 481056515549303734L;
@@ -76,10 +78,10 @@ final public class GUI extends JFrame {
     private boolean saveFlag = false;
 
     private JTextArea infoArea;
-    // ����ϵͳ��Ϣ���߳�
+    // 更新系统信息的线程
     private UpdateInfoThread updateInfoThread = new UpdateInfoThread();
 
-    private MLogApi p6Log = null;
+    private MLogApi p6Log=null;
 
     public GUI() {
         super();
@@ -102,26 +104,24 @@ final public class GUI extends JFrame {
     }
 
     public void init() {
-        try {
+        try{
             Image image = ImageIO.read(this.getClass().getResource("/img/logo.gif"));
             this.setIconImage(image);
 
-            BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.osLookAndFeelDecorated;
+            BeautyEyeLNFHelper.frameBorderStyle  = BeautyEyeLNFHelper.FrameBorderStyle.osLookAndFeelDecorated;
             org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch(Exception e) {e.printStackTrace(); }
 
         final JPanel upPanel = new JPanel();
         upPanel.setPreferredSize(new Dimension(0, 60));
         upPanel.setLayout(null);
         getContentPane().add(upPanel, BorderLayout.NORTH);
 
-        Font font = new Font("����", Font.PLAIN, 12);
+        Font font = new Font("宋体", Font.PLAIN, 12);
         final JButton button = new JButton();
         button.setBounds(5, 1, 73, 58);
         button.setFocusPainted(false);
-        button.setText("���");
+        button.setText("清空");
         button.setFont(font);
         upPanel.add(button);
         button.addActionListener(new ActionListener() {
@@ -131,8 +131,8 @@ final public class GUI extends JFrame {
         });
         button.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 3) {
-                    button.setText("�Ҷ��ˣ�");
+                if(e.getClickCount()==3){
+                    button.setText("我饿了！");
                     new Timer(true).schedule(new TimerTask() {
 
                         public void run() {
@@ -142,7 +142,7 @@ final public class GUI extends JFrame {
 
                                 public void run() {
                                     button.setIcon(null);
-                                    button.setText("���");
+                                    button.setText("清空");
                                 }
                             }, 10000);
                         }
@@ -152,71 +152,71 @@ final public class GUI extends JFrame {
         });
 
         isOutConsoleCheckBox = new JCheckBox();
-        isOutConsoleCheckBox.setText("����̨���");
+        isOutConsoleCheckBox.setText("控制台输出");
         isOutConsoleCheckBox.setBounds(80, 5, 100, 26);
         isOutConsoleCheckBox.setFont(font);
         isOutConsoleCheckBox.setSelected(false);
         upPanel.add(isOutConsoleCheckBox);
 
         isFormatSqlCheckBox = new JCheckBox();
-        isFormatSqlCheckBox.setText("��ʽ��SQL");
+        isFormatSqlCheckBox.setText("格式化SQL");
         isFormatSqlCheckBox.setBounds(180, 5, 100, 26);
         isFormatSqlCheckBox.setFont(font);
-        isFormatSqlCheckBox.setToolTipText("ȥ���Ʊ��");
+        isFormatSqlCheckBox.setToolTipText("去掉制表符");
         isFormatSqlCheckBox.setSelected(true);
         upPanel.add(isFormatSqlCheckBox);
 
         autoClearCheckBox = new JCheckBox();
         autoClearCheckBox.setSelected(true);
         autoClearCheckBox.setFont(font);
-        autoClearCheckBox.setText("�Զ����");
-        autoClearCheckBox.setToolTipText("����100000���ַ�ʱ�Զ����");
+        autoClearCheckBox.setText("自动清空");
+        autoClearCheckBox.setToolTipText("超过100000个字符时自动清空");
         autoClearCheckBox.setBounds(280, 5, 90, 26);
         upPanel.add(autoClearCheckBox);
 
         excludeSPCheckBox = new JCheckBox();
         excludeSPCheckBox.setSelected(true);
         excludeSPCheckBox.setFont(font);
-        excludeSPCheckBox.setText("����SP���");
-        excludeSPCheckBox.setToolTipText("����SmartPage������SQL���");
+        excludeSPCheckBox.setText("过滤SP语句");
+        excludeSPCheckBox.setToolTipText("过滤SmartPage操作的SQL语句");
         excludeSPCheckBox.setBounds(370, 5, 100, 26);
         upPanel.add(excludeSPCheckBox);
 
         excludeN9PubMsgCheckBox = new JCheckBox();
         excludeN9PubMsgCheckBox.setSelected(true);
         excludeN9PubMsgCheckBox.setFont(font);
-        excludeN9PubMsgCheckBox.setText("����N9��Ϣ");
-        excludeN9PubMsgCheckBox.setToolTipText("����N9��JMS��Ϣ���в�����SQL���");
+        excludeN9PubMsgCheckBox.setText("过滤N9消息");
+        excludeN9PubMsgCheckBox.setToolTipText("过滤N9的JMS消息队列操作的SQL语句");
         excludeN9PubMsgCheckBox.setBounds(470, 5, 100, 26);
         upPanel.add(excludeN9PubMsgCheckBox);
 
         logFileBox = new JCheckBox();
-        logFileBox.setText("������ļ�");
-        logFileBox.setToolTipText("�Ƚ�Ӱ������");
+        logFileBox.setText("输出到文件");
+        logFileBox.setToolTipText("比较影响性能");
         logFileBox.setFont(font);
         logFileBox.setBounds(570, 5, 100, 26);
         upPanel.add(logFileBox);
         logFileBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                saveFlag = !saveFlag;
+                saveFlag=!saveFlag;
                 try {
-                    if (p6Log != null) {
+                    if(p6Log!=null){
                         MLogQuery.removeP6Log(p6Log);
-                        p6Log = null;
+                        p6Log=null;
                     }
-                    if (saveFlag) {
-                        File f = new File(logFileField.getText());
-                        if (f.isDirectory() && f.exists()) {
-                            p6Log = new MLogFileImpl(f);
+                    if(saveFlag){
+                        File f=new File(logFileField.getText());
+                        if(f.isDirectory()&&f.exists()){
+                            p6Log=new MLogFileImpl(f);
                             MLogQuery.addP6Log(p6Log);
-                        } else {
-                            JOptionPane.showMessageDialog(upPanel, "ָ����Ŀ¼���Ϸ�");
+                        }else{
+                            JOptionPane.showMessageDialog(upPanel,"指定的目录不合法");
                         }
                     }
                 } catch (Exception e1) {
-                    if (p6Log != null) {
+                    if(p6Log!=null){
                         MLogQuery.removeP6Log(p6Log);
-                        p6Log = null;
+                        p6Log=null;
                     }
                 }
             }
@@ -227,20 +227,20 @@ final public class GUI extends JFrame {
         upPanel.add(logFileField);
 
         excludeCommitMonitorCheckBox = new JCheckBox();
-        excludeCommitMonitorCheckBox.setText("�ų������ύ���");
+        excludeCommitMonitorCheckBox.setText("排除事务提交监控");
         excludeCommitMonitorCheckBox.setBounds(80, 30, 140, 26);
         excludeCommitMonitorCheckBox.setFont(font);
-        excludeCommitMonitorCheckBox.setToolTipText("�ų�����commit�ļ����Ϣ");
+        excludeCommitMonitorCheckBox.setToolTipText("排除事务commit的监控信息");
         excludeCommitMonitorCheckBox.setSelected(true);
         upPanel.add(excludeCommitMonitorCheckBox);
 
         includePackageBox = new JCheckBox();
-        includePackageBox.setText("����������");
+        includePackageBox.setText("包含包或类");
         includePackageBox.setBounds(230, 30, 100, 26);
         includePackageBox.setFont(font);
         includePackageBox.setToolTipText("");
         includePackageBox.setSelected(false);
-        includePackageBox.setToolTipText("����:com.nstc.cpm��ConfirmReceiveOrderAction��ǰ����Ҫ��ѡ�����������ࡱ��ѡ�򣬴����û�Ӱ������");
+        includePackageBox.setToolTipText("例如:com.nstc.cpm或ConfirmReceiveOrderAction，前提是要勾选“包含包或类”复选框，此设置会影响性能");
         upPanel.add(includePackageBox);
 
         includePackageField = new JTextField();
@@ -249,10 +249,10 @@ final public class GUI extends JFrame {
         upPanel.add(includePackageField);
 
         excludeStrBox = new JCheckBox();
-        excludeStrBox.setText("�ų��ַ���");
+        excludeStrBox.setText("排除字符串");
         excludeStrBox.setBounds(570, 30, 100, 26);
         excludeStrBox.setFont(font);
-        excludeStrBox.setToolTipText("�����SQL������������������ݣ����ִ�Сд���򲻽�����ʾ");
+        excludeStrBox.setToolTipText("输入的SQL语句如果包含输入的内容（区分大小写）则不进行显示");
         excludeStrBox.setSelected(true);
         upPanel.add(excludeStrBox);
 
@@ -264,7 +264,7 @@ final public class GUI extends JFrame {
         final JPanel mainJPlanel = new JPanel();
         mainJPlanel.setLayout(new BorderLayout());
         textArea = new JTextArea();
-        textArea.setFont(new Font("����", Font.PLAIN, 13));
+        textArea.setFont(new Font("宋体", Font.PLAIN, 13));
         mainJPlanel.add(textArea);
         getContentPane().add(mainJPlanel, BorderLayout.CENTER);
         JScrollPane textAreaJScrollPane = new JScrollPane();
@@ -296,7 +296,6 @@ final public class GUI extends JFrame {
         getContentPane().add(infoAreaJScrollPane, BorderLayout.WEST);
         updateInfoThread.start();
     }
-
     public void cleanTextArea() {
         count = 0;
         textArea.setText("");
@@ -310,62 +309,62 @@ final public class GUI extends JFrame {
         if (!driverMap.containsKey(key)) {
             String path = parseJarFile(passthru.getClass().getResource(
                     getClassName(passthru.getClass())));
-            String msg = "  URL:" + realUrl + "  �û�:" + user + "  ����:******  �����ļ�·��:" + path + "\r\n";
+            String msg = "  URL:" + realUrl + "  用户:" + user + "  密码:******  驱动文件路径:" + path + "\r\n";
             driverMap.put(key, msg);
             stateArea.append(msg);
         }
     }
 
-    public void appendAtTextArea(String sql1, String sql2) {
+    public void appendAtTextArea(String sql1,String sql2) {
         if (isDisabled == false) {
-            String sql = null;
-            if (isFormatSqlCheckBox.isSelected()) {
-                sql = sql1;
-            } else {
-                sql = sql2;
+            String sql=null;
+            if (isFormatSqlCheckBox.isSelected()){
+                sql=sql1;
+            }else{
+                sql=sql2;
             }
 
-            if (excludeSPCheckBox.isSelected()) {
-                if (sql != null && (sql.indexOf("SMB_") > 0)) {
+            if(excludeSPCheckBox.isSelected()){
+                if(sql != null && (sql.indexOf("SMB_")>0)){
                     return;
                 }
             }
 
-            if (excludeN9PubMsgCheckBox.isSelected()) {
-                if (sql != null && (sql.indexOf("PUB_MESSAGE_CONTENT") > 0)) {
+            if(excludeN9PubMsgCheckBox.isSelected()){
+                if(sql != null && (sql.indexOf("PUB_MESSAGE_CONTENT")>0)){
                     return;
                 }
             }
 
-            if (excludeCommitMonitorCheckBox.isSelected()) {
-                if (sql != null && (sql.indexOf(",MD=commit,") > 0)) {
+            if(excludeCommitMonitorCheckBox.isSelected()){
+                if(sql != null && (sql.indexOf(",MD=commit,")>0)){
                     return;
                 }
             }
 
-            if (excludeStrBox.isSelected() && excludeStrField.getText() != null && !excludeStrField.getText().trim().equals("")) {
-                if (sql != null && (sql.indexOf(excludeStrField.getText()) > 0)) {
+            if(excludeStrBox.isSelected() && excludeStrField.getText() != null && !excludeStrField.getText().trim().equals("")){
+                if(sql != null && (sql.indexOf(excludeStrField.getText())>0)){
                     return;
                 }
             }
 
-            if (includePackageBox.isSelected() && includePackageField.getText() != null && !includePackageField.getText().trim().equals("")) {
+            if(includePackageBox.isSelected() && includePackageField.getText() != null && !includePackageField.getText().trim().equals("")){
                 StackTraceElement[] sts = Thread.currentThread().getStackTrace();
-                if (sts.length > 0) {
+                if(sts.length > 0){
                     boolean ok = false;
                     for (int i = sts.length - 1; i >= 0; i--) {
                         StackTraceElement st = sts[i];
-                        if (st.toString().indexOf(includePackageField.getText()) >= 0) {
+                        if(st.toString().indexOf(includePackageField.getText()) >= 0){
                             ok = true;
                             break;
                         }
                     }
-                    if (!ok) return;
+                    if(!ok) return;
                 }
             }
 
             textArea.append(sql);
-            if (isOutConsoleCheckBox.isSelected()) {
+            if (isOutConsoleCheckBox.isSelected()){
                 System.out.print(sql);
             }
             count += sql.length();
@@ -419,7 +418,7 @@ final public class GUI extends JFrame {
             while (true) {
                 try {
                     getInfoArea().setText(
-                            "������Ϣÿ30�����һ��\r\n\r\n" + ServerInfo.buildReport());
+                            "以下信息每30秒更新一次\r\n\r\n" + ServerInfo.buildReport());
                     super.sleep(30000);
                 } catch (Throwable e) {
                     e.printStackTrace();

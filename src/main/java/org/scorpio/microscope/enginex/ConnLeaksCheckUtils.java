@@ -14,32 +14,33 @@ import java.util.Set;
 import javax.servlet.ServletException;
 
 /**
- * ���ݿ�����й¶��⹤��
+ * 数据库连接泄露检测工具
  *
  * @author sunyujia
+ *
  */
 public class ConnLeaksCheckUtils {
     /**
-     * ��һ���̻߳�ȡ�����ݿ��������������ֵʱ������Ԥ����
+     * 当一个线程获取的数据库连接数超过这个值时，进行预警。
      */
     private static int CHECK_SIZE = 40;
     private static ThreadLocal resources = new ThreadLocal();
 
     public static void addConn2Thread(Connection conn) {
         if (getConnectionsSet().size() == CHECK_SIZE) {
-            System.out.println("P6SPY��鵽��ǰ�̻߳�ȡ���ݿ����ӹ���(" + CHECK_SIZE
-                    + ")���ó�����ܴ�������ȱ��,�߳�:" + Thread.currentThread().getName());
+            System.out.println("P6SPY检查到当前线程获取数据库连接过多(" + CHECK_SIZE
+                    + ")，该程序可能存在性能缺陷,线程:" + Thread.currentThread().getName());
         }
         getConnectionsSet().add(conn);
         getStackTraceList().add(new RuntimeException());
     }
 
     public static String getStackTrace() {
-        String s = "";
+        String s="";
         List list = getStackTraceList();
         for (int i = 0; i < list.size(); i++) {
             Exception re = (Exception) list.get(i);
-            s += stackTraceToString(re) + "\r\n";
+            s+=stackTraceToString(re)+"\r\n";
         }
         return s;
     }
@@ -97,14 +98,14 @@ public class ConnLeaksCheckUtils {
     }
 
     /**
-     * �жϵ�ǰ�߳��Ƿ�������й¶
+     * 判断当前线程是否有连接泄露
      *
      * @return
      */
     public static boolean isConnLeaks() {
         if (getConnectionsSet().size() >= CHECK_SIZE) {
-            System.out.println("P6SPY��鵽��ǰ�̻߳�ȡ���ݿ����ӹ���("
-                    + getConnectionsSet().size() + ")���ó�����ܴ�������ȱ��,�߳�:"
+            System.out.println("P6SPY检查到当前线程获取数据库连接过多("
+                    + getConnectionsSet().size() + ")，该程序可能存在性能缺陷,线程:"
                     + Thread.currentThread().getName());
         }
         Iterator iterator = getConnectionsSet().iterator();
@@ -123,7 +124,7 @@ public class ConnLeaksCheckUtils {
     }
 
     /**
-     * �жϵ�ǰ�߳��Ƿ�������й¶,�������ǿ�йر�����
+     * 判断当前线程是否有连接泄露,如果有则强行关闭连接
      *
      * @return
      */

@@ -43,7 +43,7 @@ public class CheckLeakFilter implements Filter {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             /**
-             * һ��request����ڶ��ν���ù�������servlet�ض���ĳ�����
+             * 一个request请求第二次进入该过滤器（servlet重定向的场景）
              */
             if (request.getAttribute(CheckLeakFilter.class.getName()) != null) {
                 filterChain.doFilter(request, response);

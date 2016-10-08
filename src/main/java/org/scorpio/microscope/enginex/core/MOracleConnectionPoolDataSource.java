@@ -9,9 +9,6 @@ import org.scorpio.microscope.enginex.logging.MLogFactory;
 import oracle.jdbc.pool.OracleConnectionPoolDataSource;
 
 public class MOracleConnectionPoolDataSource extends OracleConnectionPoolDataSource {
-    /**
-     * P6���Ĺ���
-     */
     protected static MFactory mFactory = new MLogFactory();
 
     public MOracleConnectionPoolDataSource() throws SQLException {

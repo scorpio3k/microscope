@@ -63,7 +63,7 @@ public class ChgClassPathUtils {
                 chgStartFile(startFile, jarName);
             }
         } catch (Throwable e) {
-            System.out.println("����classpathʧ��" + e.getMessage());
+            System.out.println("加入classpath失败：" + e.getMessage());
         }
     }
 
@@ -83,7 +83,7 @@ public class ChgClassPathUtils {
         if (sidx > 0) {
             bakFile(file);
             String temp = "\r\n" + prefixName + "P6-START\r\n";
-            temp += prefixName + "�öδ���ΪP6�Զ��޸ĸ��ļ�����ģ����ֹ����룬�뱣����ʽ�������ո�ͱ����š�\r\n";
+            temp += prefixName + "该段代码为P6自动修改该文件加入的，非手工加入，请保留格式，包括空格和标点符号。\r\n";
             temp += "SET CLASSPATH=%DOMAIN_HOME%" + File.separator + "lib"
                     + File.separator + jarName + ";%CLASSPATH%\r\n";
             temp += prefixName + endMark + "\r\n";
@@ -93,8 +93,8 @@ public class ChgClassPathUtils {
                     + text.substring(sidx + startMark.length()).trim();
             if (!newText.equals(oldText)) {
                 IOUtil.writeStringToFile(file, newText, getFileEncoding());
-                System.out.println("��" + jarName + "���뵽" + file
-                        + "�ļ���classpath������");
+                System.out.println("将" + jarName + "加入到" + file
+                        + "文件的classpath变量中");
             }
         }
     }
@@ -111,7 +111,7 @@ public class ChgClassPathUtils {
     private static void bakFile(File file) throws IOException {
         File bFile = new File(file.getAbsolutePath() + ".P6Bak");
         if (!bFile.exists()) {
-            System.out.println("����:" + bFile.getAbsolutePath());
+            System.out.println("备份:" + bFile.getAbsolutePath());
             IOUtil.copyFile(file, bFile, false);
         }
     }

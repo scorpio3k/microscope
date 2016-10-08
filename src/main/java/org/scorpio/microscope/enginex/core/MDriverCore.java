@@ -1,6 +1,5 @@
 package org.scorpio.microscope.enginex.core;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -12,58 +11,57 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import org.scorpio.microscope.enginex.NstcDataSource;
-import org.scorpio.microscope.enginex.logging.MLogFactory;
 import org.scorpio.microscope.enginex.common.MLogQuery;
+import org.scorpio.microscope.enginex.logging.MLogFactory;
 
 public class MDriverCore implements Driver {
     /**
-     * ��������������ʵ��
+     * 真正的驱动对象实例
      */
     protected Driver passthru = null;
 
     /**
-     * ��ʼ������ִ����ϵı�ʶ
+     * 初始化工作执行完毕的标识
      */
     protected static boolean initialized = false;
 
     /**
-     * ��ű�P6�йܵ����ݿ���������
+     * 存放被P6托管的数据库驱动容器
      */
     protected static ArrayList realDrivers = new ArrayList();
 
-    protected static Map p6dsMap = new HashMap();
+    protected static Map p6dsMap=new HashMap();
 
     /**
-     * ��֤��ʼ���������̰߳�ȫ
+     * 保证初始化工作的线程安全
      *
-     * @param driverNames
      */
     public synchronized static void init() {
-        if (initialized)// ��ʶ��ʼ������ִֻ��һ��
+        if (initialized)// 标识初始化工作只执行一次
             return;
         deregisterDefaultDriver();
-        List driverNames = loadDriverNames();//�������ļ�������ʵ������������
+        List driverNames=loadDriverNames();//从配置文件加载真实驱动的驱动名
         if (driverNames == null || driverNames.size() == 0)
             return;
         String className = null;
         try {
             for (int i = 0; i < driverNames.size(); i++) {
-                MDriverCore spy = new MDriverCore();// ����һ��P6����ʵ��
-                DriverManager.registerDriver(spy);// ע��P6����ʵ��
+                MDriverCore spy = new MDriverCore();// 创建一个P6驱动实例
+                DriverManager.registerDriver(spy);// 注册P6驱动实例
                 className = (String) driverNames.get(i);
-                deregister(className);// ������������������p6ǰע������,���з�ע��
+                deregister(className);// 处理真正的驱动抢在p6前注册的情况,进行反注册
                 try {
                     Driver realDriver = (Driver) forName(className)
-                            .newInstance();// ��������������
-                    spy.setPassthru(realDriver);// ������������ע�뵽P6������,��ΪP6���������һ������
-                    realDrivers.add(realDriver);// ��������������ӵ�P6����ʵ�������������
+                            .newInstance();// 加载真正的驱动
+                    spy.setPassthru(realDriver);// 将真正的驱动注入到P6驱动中,做为P6驱动对象的一个属性
+                    realDrivers.add(realDriver);// 将真正的驱动添加到P6驱动实例共享的容器中
                     MLogQuery.logInfo("Found Driver " + className);
                 } catch (ClassNotFoundException e) {
-                    DriverManager.deregisterDriver(spy);// �Ҳ���������������ʱ,��ע���P6����ʵ��,��Ϊ���ʵ�������д��ڵļ�ֵ��.
+                    DriverManager.deregisterDriver(spy);// 找不到真正的驱动类时,反注册掉P6驱动实例,因为这个实例不具有存在的价值了.
                     continue;
                 }
             }
-            printRegisteredDrivers();// ����Ѿ�ע���������Ϣ������̨
+            printRegisteredDrivers();// 输出已经注册的驱动信息到控制台
             ChgClassPathUtils.modifyClassPath();
         } catch (Exception e) {
             String err = "P6SPY Error registering  [" + className + "]\nCaused By: "
@@ -76,10 +74,10 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * ��ӡ��ǰ�Ѿ�ע�������
+     * 打印当前已经注册的驱动
      */
     private static void printRegisteredDrivers() {
-        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements(); ) {
+        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
             Object dr = e.nextElement();
             String msg = dr.toString();
             if (dr instanceof MDriverCore) {
@@ -87,23 +85,23 @@ public class MDriverCore implements Driver {
                         + ((MDriverCore) dr).getPassthru().getClass()
                         .getName().toString();
                 MLogQuery.logDebug("DriverManager registered:" + msg);
-            } else {
+            }else{
                 MLogQuery.logDebug("DriverManager registered:" + msg);
             }
         }
-        String str = "\n�����ܣߨq�q�q�q�q�ߣ��� ��";
-        str += "\n�������������������������ܣ��� ";
-        str += "\n�������񡡡��������񡡩���� ";
-        str += "\n�����𡡨t�ЩЩШs���𩦣����� ";
-        str += "\n�����������t���s�������� ��";
-        str += "\n  �t���С𡪡������С�s";
-        str += "\n�����q���������������r";
-        str += "\n�����t�ء����������بs";
+        String str = "\n　│＼＿╭╭╭╭╭＿／│ 　";
+        str += "\n　│　　　　　　　　　│＼｜／ ";
+        str += "\n　│　●　　　　　●　│—☆— ";
+        str += "\n　│○　╰┬┬┬╯　○│／｜＼ ";
+        str += "\n　│　　　╰—╯　　　／ 　";
+        str += "\n  ╰—┬○————┬○╯";
+        str += "\n　　╭│　　　　　│╮";
+        str += "\n　　╰┴—————┴╯";
         System.out.println(str);
     }
 
     /**
-     * ʹ�õ�ǰ�̵߳������������Ŀ����,���ʧ��ʹ�õ�ǰ��������������
+     * 使用当前线程的类加载器加载目标类,如果失败使用当前类的类加载器重试
      *
      * @param name
      * @return
@@ -116,7 +114,7 @@ public class MDriverCore implements Driver {
             return Class.forName(name, true, ctxLoader);
 
         } catch (ClassNotFoundException ex) {
-            System.out.println("����: ClassNotFound " + name);
+            System.out.println("警告: ClassNotFound " + name);
         } catch (SecurityException ex) {
             ex.printStackTrace();
         }
@@ -124,14 +122,14 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * ��������p6ǰע����������з�ע��
+     * 查找抢在p6前注册的驱动进行反注册
      *
      * @param className
      * @throws SQLException
      */
     static void deregister(String className) throws SQLException {
         ArrayList dereg = new ArrayList();
-        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements(); ) {
+        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
             Driver driver = (Driver) e.nextElement();
             if (driver instanceof MDriverCore) {
                 continue;
@@ -150,13 +148,13 @@ public class MDriverCore implements Driver {
             for (int i = 0; i < size; i++) {
                 Driver driver = (Driver) dereg.get(i);
                 DriverManager.deregisterDriver(driver);
-                System.out.println("����: DeregisterDriver " + className);
+                System.out.println("警告: DeregisterDriver " + className);
             }
         }
     }
 
     /**
-     * ������������Կ������ӱ�������װ��
+     * 从这里可以明显看到连接被工厂包装了
      *
      * @param realConnection
      * @return
@@ -164,9 +162,9 @@ public class MDriverCore implements Driver {
      */
     public static Connection wrapConnection(Connection realConnection)
             throws SQLException {
-        if (realConnection instanceof MConnection) {
+        if(realConnection instanceof MConnection){
             return realConnection;
-        } else {
+        }else{
             return new MLogFactory().getConnection(realConnection);
         }
     }
@@ -186,7 +184,7 @@ public class MDriverCore implements Driver {
             throw new SQLException("Database URL Is Null");
         }
         findPassthru(realUrl);
-        if (passthru == null) // �����������Ҳ���ƥ�������
+        if (passthru == null) // 在驱动池中找不到匹配的驱动
             throw new SQLException("Unable to find a driver that accepts "
                     + realUrl);
         Connection conn = passthru.connect(realUrl, p1);
@@ -209,9 +207,9 @@ public class MDriverCore implements Driver {
                 if (dbn == null || "".equals(dbn)) {
                     dbn = getDbNameFromUrl(realUrl);
                 }
-                String jndiName = "P6DS_" + dbn + "_" + nds.getUser();
+                String jndiName = "P6DS_" + dbn +"_"+ nds.getUser();
                 new javax.naming.InitialContext().bind(jndiName, nds);
-                System.out.println("P6 JDBCα���ӳ�ע�ᵽJNDI:" + jndiName + ",�����ڼ������й¶.");
+                System.out.println("P6 JDBC伪连接池注册到JNDI:" + jndiName+",可用于检测连接泄露.");
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -245,7 +243,7 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * ����ʵ�ʣգң�Ѱ����ʵ����,passthru����Ϊ��MDriver�������ʵ����ʵ��
+     * 根据实际ＵＲＬ寻找真实驱动,passthru属性为该P6Driver代理的真实驱动实例
      *
      * @param url
      */
@@ -274,7 +272,7 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * �жϸ������Ƿ�ƥ��URL,��DriverManager.getDriver(url)�е��ô˷�����
+     * 判断该驱动是否匹配URL,在DriverManager.getDriver(url)中调用此方法。
      */
     public boolean acceptsURL(String realUrl) throws SQLException {
         boolean accepts = false;
@@ -326,14 +324,13 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * �������ļ�������ʵ������������
-     *
+     * 从配置文件加载真实驱动的驱动名
      * @return
      */
     private static List loadDriverNames() {
         List driverNames = new ArrayList();
         try {
-            ResourceBundle resources = ResourceBundle.getBundle("core-drivers");
+            ResourceBundle resources = ResourceBundle.getBundle("spy-drivers");
             Enumeration keys = resources.getKeys();
             while (keys.hasMoreElements()) {
                 driverNames.add(resources.getString(keys.nextElement()
@@ -350,12 +347,12 @@ public class MDriverCore implements Driver {
     }
 
     /**
-     * ��ע���OJDBC6����ʱ���Զ�ע���������
+     * 反注册掉OJDBC6启动时，自动注册的驱动。
      */
-    private static void deregisterDefaultDriver() {
-        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements(); ) {
+    private static void deregisterDefaultDriver(){
+        for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) {
             try {
-                DriverManager.deregisterDriver((Driver) e.nextElement());
+                DriverManager.deregisterDriver((Driver)e.nextElement());
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }

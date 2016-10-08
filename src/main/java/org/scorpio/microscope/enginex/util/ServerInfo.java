@@ -12,26 +12,18 @@ public class ServerInfo {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Empty parameter signature for reflective calls
-     */
+    /** Empty parameter signature for reflective calls */
     private static final Class[] NO_PARAMS_SIG = new Class[0];
 
-    /**
-     * Empty paramater list for reflective calls
-     */
+    /** Empty paramater list for reflective calls */
     private static final Object[] NO_PARAMS = new Object[0];
 
     private static final String BR = "\r\n";
 
-    /**
-     * The cached host name for the server.
-     */
+    /** The cached host name for the server. */
     private static String hostName;
 
-    /**
-     * The cached host address for the server.
-     */
+    /** The cached host address for the server. */
     private static String hostAddress;
 
     public static String getJavaVersion() {
@@ -166,42 +158,41 @@ public class ServerInfo {
 
     public static String buildReport() {
         StringBuffer sb = new StringBuffer();
-        sb.append("ͳ��ʱ��: ").append(dateFormat.format(new Date())).append(BR);
-        sb.append("����ϵͳ��").append(getOSName()).append(" ").append(getOSArch())
+        sb.append("统计时间: ").append(dateFormat.format(new Date())).append(BR);
+        sb.append("操作系统：").append(getOSName()).append(" ").append(getOSArch())
                 .append(" ").append(ServerInfo.getOSVersion()).append(BR);
-        sb.append("��ǰʹ��JAVA_HOME: ").append(getJavaHome()).append(BR);
-        sb.append("JAVA���������(java.vm.name): ").append(getJavaVMName()).append(
+        sb.append("当前使用JAVA_HOME: ").append(getJavaHome()).append(BR);
+        sb.append("JAVA虚拟机名称(java.vm.name): ").append(getJavaVMName()).append(
                 BR);
-        sb.append("JAVA�������Ӧ��(java.vm.vendor): ").append(getJavaVMVendor())
+        sb.append("JAVA虚拟机供应商(java.vm.vendor): ").append(getJavaVMVendor())
                 .append(BR);
-        sb.append("JAVA������汾(java.vm.version): ").append(getJavaVMVersion())
+        sb.append("JAVA虚拟机版本(java.vm.version): ").append(getJavaVMVersion())
                 .append(BR);
-        sb.append("JAVA�汾(java.version): ").append(getJavaVersion()).append(BR);
-        sb.append("JAVA�汾(java.vendor): ").append(getJavaVendor()).append(BR);
-        sb.append("��ǰռ���ڴ�����: ").append(
+        sb.append("JAVA版本(java.version): ").append(getJavaVersion()).append(BR);
+        sb.append("JAVA版本(java.vendor): ").append(getJavaVendor()).append(BR);
+        sb.append("当前占用内存总数: ").append(
                 getTotalMemory().longValue() / (1024 * 1024)).append("MB")
                 .append(BR);
-        sb.append("��ǰռ���ڴ�ʣ��: ").append(
+        sb.append("当前占用内存剩余: ").append(
                 getFreeMemory().longValue() / (1024 * 1024)).append("MB")
                 .append(BR);
-        sb.append("����ռ�õ��ڴ�: ").append(
+        sb.append("最大可占用的内存: ").append(
                 getMaxMemory().longValue() / (1024 * 1024)).append("MB")
                 .append(BR);
-        sb.append("��ǰ��߳�������: ").append(getActiveThreadGroupCount()).append(BR);
-        sb.append("��ǰ��߳�����: ").append(getActiveThreadCount()).append(BR);
-        sb.append("CPU�ں���: ").append(getAvailableProcessors()).append(BR);
-        sb.append("��ǰ����IP��ַ: ").append(getHostAddress()).append(BR);
-        sb.append("��ǰ��������: ").append(getHostName()).append(BR);
-        sb.append("��ǰ����·��: ").append(
+        sb.append("当前活动线程组总数: ").append(getActiveThreadGroupCount()).append(BR);
+        sb.append("当前活动线程总数: ").append(getActiveThreadCount()).append(BR);
+        sb.append("CPU内核数: ").append(getAvailableProcessors()).append(BR);
+        sb.append("当前主机IP地址: ").append(getHostAddress()).append(BR);
+        sb.append("当前主机名称: ").append(getHostName()).append(BR);
+        sb.append("当前程序路径: ").append(
                 parseJarFile(ServerInfo.class.getResource(getClassName(ServerInfo.class)))).append(BR);
-        sb.append("��ǰע���SQL������������ࣺ").append(BR);
-        List list = MLogQuery.getLogs();
-        for (int i = 0; i < list.size(); i++) {
+        sb.append("当前注册的SQL跟踪输出处理类：").append(BR);
+        List list=MLogQuery.getLogs();
+        for(int i =0;i<list.size();i++){
             sb.append(list.get(i).getClass()).append(BR);
         }
         return sb.toString();
     }
-
     public static String getClassName(Class clazz) {
         String packageName = clazz.getPackage().getName();
         String className = clazz.getName();
@@ -220,7 +211,6 @@ public class ServerInfo {
             return file;
         }
     }
-
     public static void main(String[] args) {
         System.out.println(ServerInfo.buildReport());
     }

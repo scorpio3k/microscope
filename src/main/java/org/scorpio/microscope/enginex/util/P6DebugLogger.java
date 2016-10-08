@@ -1,22 +1,5 @@
 package org.scorpio.microscope.enginex.util;
 
-
-/**
- * <p>
- * Title:
- * </p>
- * <p>
- * <p>
- * Description:
- * </p>
- * <p>
- * <p>
- * Company: �����ź��ǿƼ��ɷ����޹�˾
- * </p>
- *
- * @author ���ڼ�
- * @since��2012-11-23 ����11:30:48
- */
 public class P6DebugLogger {
     private static MFileWriter p6ThreadLogImpl;
 

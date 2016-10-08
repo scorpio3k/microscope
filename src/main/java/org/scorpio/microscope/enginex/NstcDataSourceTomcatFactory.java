@@ -42,7 +42,7 @@ public class NstcDataSourceTomcatFactory implements ObjectFactory {
 
     public static DataSource createDataSource(Properties properties)
             throws Exception {
-        System.out.println("׼������P6���ӳ�...........");
+        System.out.println("......准备创建连接池.");
         NstcDbcpDataSource dataSource = new org.scorpio.microscope.enginex.NstcDbcpDataSource();
 
         String value = null;

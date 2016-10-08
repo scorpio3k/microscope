@@ -83,7 +83,7 @@ public class NstcDataSource implements DataSource {
             conn = DriverManager.getConnection(getJdbcUrl(), getUser(),
                     getPassword());
         } catch (ClassNotFoundException e) {
-            throw new SQLException("���ݿ������޷��ҵ� ClassNotFoundException"
+            throw new SQLException("数据库驱动无法找到-ClassNotFoundException"
                     + e.getMessage());
         } catch (SQLException e) {
             throw e;

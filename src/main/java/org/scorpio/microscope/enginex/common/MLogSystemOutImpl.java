@@ -13,7 +13,7 @@ public class MLogSystemOutImpl extends MLogApi {
         String password = p1.getProperty("password");
         String path = parseJarFile(passthru.getClass().getResource(
                 getClassName(passthru.getClass())));
-        String msg = "  URL:" + realUrl + "  �û�:" + user + "  ����:******  �����ļ�·��:" + path + "\r\n";
+        String msg = "  URL:" + realUrl + "  用户：" + user + "  密码：******  驱动文件路径：" + path + "\r\n";
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println(msg);
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");

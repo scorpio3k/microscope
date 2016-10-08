@@ -16,11 +16,6 @@ public class Setting {
         Setting.isEnableLog = false;
     }
 
-    /**
-     * �Ƿ�����Դй¶
-     *
-     * @return
-     */
     public static boolean isCheckConnLeaks() {
         if (isCheckConnLeaks == null) {
             String s = (String) System.getProperties().get("isCheckConnLeaks");
