@@ -22,8 +22,9 @@ public class IOUtil {
             throw new NullPointerException("Destination must not be null");
         }
         if (srcFile.exists() == false) {
-            throw new FileNotFoundException("Source '" + srcFile
+            FileNotFoundException fileNotFoundException = new FileNotFoundException("Source '" + srcFile
                     + "' does not exist");
+            throw fileNotFoundException;
         }
         if (srcFile.isDirectory()) {
             throw new IOException("Source '" + srcFile

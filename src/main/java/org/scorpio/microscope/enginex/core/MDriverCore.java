@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import org.scorpio.microscope.enginex.NstcDataSource;
+import org.scorpio.microscope.enginex.MDataSource;
 import org.scorpio.microscope.enginex.common.MLogQuery;
 import org.scorpio.microscope.enginex.logging.MLogFactory;
 
@@ -192,9 +192,9 @@ public class MDriverCore implements Driver {
             conn = wrapConnection(conn);
         String p6dsKey = realUrl + p1.getProperty("user");
         if (!p6dsMap.containsKey(p6dsKey)) {
-            NstcDataSource nds = null;
+            MDataSource nds = null;
             try {
-                nds = new NstcDataSource();
+                nds = new MDataSource();
                 nds.setDriverClass(this.getClass().getName());
                 nds.setDriver(this);
                 nds.setUrl(realUrl);

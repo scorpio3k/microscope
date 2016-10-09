@@ -23,7 +23,7 @@ import org.scorpio.microscope.enginex.core.Setting;
  * @author tzy
  * @since��2013-10-12 ����05:13:14
  */
-public class NstcDbcpDataSource extends BasicDataSource {
+public class MDbcpDataSource extends BasicDataSource {
     public Connection getConnection() throws SQLException {
         Connection conn = super.getConnection();
         return proxyConnection(conn);

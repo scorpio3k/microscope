@@ -1,5 +1,9 @@
 package org.scorpio.microscope.enginex;
 
+import org.scorpio.microscope.enginex.core.MDriverCore;
+import org.scorpio.microscope.enginex.core.Setting;
+
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,20 +12,15 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 
-import javax.sql.DataSource;
 
-import org.scorpio.microscope.enginex.core.MDriverCore;
-import org.scorpio.microscope.enginex.core.Setting;
-
-
-public class NstcDataSource implements DataSource {
+public class MDataSource implements DataSource {
     private String driverClass;
     private String jdbcUrl;
     private String user;
     private String password;
     private MDriverCore driver;
 
-    public NstcDataSource() {
+    public MDataSource() {
     }
 
     public String getDriverClass() {

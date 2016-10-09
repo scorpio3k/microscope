@@ -1,8 +1,10 @@
 package org.scorpio.microscope.enginex.logging;
 
-import java.sql.*;
+import org.scorpio.microscope.enginex.core.MConnection;
+import org.scorpio.microscope.enginex.core.MFactory;
+import org.scorpio.microscope.enginex.core.MStatement;
 
-import org.scorpio.microscope.enginex.core.*;
+import java.sql.*;
 
 public class MLogFactory implements MFactory {
 
@@ -14,7 +16,7 @@ public class MLogFactory implements MFactory {
     }
 
     public PreparedStatement getPreparedStatement(PreparedStatement real,
-												  MConnection conn, String p0) throws SQLException {
+                                                  MConnection conn, String p0) throws SQLException {
         return new MLogPreparedStatement(this, real, conn, p0);
     }
 
@@ -24,7 +26,7 @@ public class MLogFactory implements MFactory {
     }
 
     public CallableStatement getCallableStatement(CallableStatement real,
-												  MConnection conn, String p0) throws SQLException {
+                                                  MConnection conn, String p0) throws SQLException {
         return new MLogCallableStatement(this, real, conn, p0);
     }
 

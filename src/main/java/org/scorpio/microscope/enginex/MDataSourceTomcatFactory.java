@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 import org.scorpio.microscope.enginex.core.Setting;
 
 
-public class NstcDataSourceTomcatFactory implements ObjectFactory {
+public class MDataSourceTomcatFactory implements ObjectFactory {
     private static final String[] ALL_PROPERTIES = {"driverClassName",
             "password", "url", "username",};
 
@@ -43,7 +43,7 @@ public class NstcDataSourceTomcatFactory implements ObjectFactory {
     public static DataSource createDataSource(Properties properties)
             throws Exception {
         System.out.println("......准备创建连接池.");
-        NstcDbcpDataSource dataSource = new org.scorpio.microscope.enginex.NstcDbcpDataSource();
+        MDbcpDataSource dataSource = new MDbcpDataSource();
 
         String value = null;
         value = properties.getProperty("driverClassName");

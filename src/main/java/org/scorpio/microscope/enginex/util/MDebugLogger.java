@@ -1,9 +1,9 @@
 package org.scorpio.microscope.enginex.util;
 
-public class P6DebugLogger {
+public class MDebugLogger {
     private static MFileWriter p6ThreadLogImpl;
 
-    public P6DebugLogger(String dir) {
+    public MDebugLogger(String dir) {
         try {
             p6ThreadLogImpl = new MFileWriter();
             p6ThreadLogImpl.setLogDir(dir);
@@ -12,7 +12,7 @@ public class P6DebugLogger {
         }
     }
 
-    public P6DebugLogger() {
+    public MDebugLogger() {
         try {
             p6ThreadLogImpl = new MFileWriter();
         } catch (Throwable e) {
@@ -26,7 +26,7 @@ public class P6DebugLogger {
 
     public void begin(String mark) {
         try {
-            p6ThreadLogImpl.log("P6 DEBUG START!" + mark);
+            p6ThreadLogImpl.log("microscope DEBUG START!" + mark);
             ThreadResources.bindResource("P6Thread", p6ThreadLogImpl);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -39,7 +39,7 @@ public class P6DebugLogger {
 
     public void end(String mark) {
         try {
-            p6ThreadLogImpl.log("P6 DEBUG STOP!" + mark);
+            p6ThreadLogImpl.log("microscope DEBUG STOP!" + mark);
             ThreadResources.clear();
         } catch (Throwable e) {
             e.printStackTrace();

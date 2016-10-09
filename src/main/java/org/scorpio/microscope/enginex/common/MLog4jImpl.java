@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 public class MLog4jImpl extends MLogApi {
     private static Logger logger = Logger.getLogger(MLog4jImpl.class);
 
-    public void log(String f, String s) {
+    public void log(String f, String s){
         logger.info(formatSQL(f, s));
     }
 

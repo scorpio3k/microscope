@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 /**
  * 数据库连接泄露检测工具
  *
- * @author sunyujia
  *
  */
 public class ConnLeaksCheckUtils {
@@ -28,7 +27,7 @@ public class ConnLeaksCheckUtils {
 
     public static void addConn2Thread(Connection conn) {
         if (getConnectionsSet().size() == CHECK_SIZE) {
-            System.out.println("P6SPY检查到当前线程获取数据库连接过多(" + CHECK_SIZE
+            System.out.println("检查到当前线程获取数据库连接过多(" + CHECK_SIZE
                     + ")，该程序可能存在性能缺陷,线程:" + Thread.currentThread().getName());
         }
         getConnectionsSet().add(conn);
@@ -104,7 +103,7 @@ public class ConnLeaksCheckUtils {
      */
     public static boolean isConnLeaks() {
         if (getConnectionsSet().size() >= CHECK_SIZE) {
-            System.out.println("P6SPY检查到当前线程获取数据库连接过多("
+            System.out.println("检查到当前线程获取数据库连接过多("
                     + getConnectionsSet().size() + ")，该程序可能存在性能缺陷,线程:"
                     + Thread.currentThread().getName());
         }

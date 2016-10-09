@@ -11,6 +11,17 @@ import java.util.Date;
 
 import org.scorpio.microscope.enginex.common.MThreadAIP;
 
+/**
+ * <p>
+ * Title: 默认的线程跟踪类。
+ * </p>
+ *
+ * <p>
+ * Description:本类以及调用本类的相关类，属于高级应用，没看懂之前万不可修改。
+ * </p>
+ *
+ *
+ */
 public class MFileWriter implements MThreadAIP {
     private DateFormat fmt = new SimpleDateFormat("yyMMdd-HHmmss");
     private DecimalFormat ddf = new DecimalFormat("00000");
@@ -25,7 +36,6 @@ public class MFileWriter implements MThreadAIP {
             throws IOException {
         setLogFilePath(logDir, logName);
     }
-
     public void setLogFilePath(String logDir, String logName)
             throws IOException {
         if ((this.logDir != null && !this.logDir.equals(logDir))
@@ -40,9 +50,9 @@ public class MFileWriter implements MThreadAIP {
     }
 
     public void writeLine(String msg) throws IOException {
-        if (lineCount > 1000) {// �������Ч��ÿ1000�е�ʱ���ж��Ƿ���Ҫ�½��ļ���������ÿ�ζ��жϡ�
+        if (lineCount > 1000) {// 提高运行效率每1000行的时候判断是否需要新建文件，而不是每次都判断。
             lineCount = 0;
-            logFile.lastModified();// ǿ��JVM�����ļ���Ϣ����Ҫ���ļ�������Ϣ.
+            logFile.lastModified();// 强制JVM更新文件信息，主要是文件长度信息.
             if (logFile.length() > maxfileSize) {
                 createLogFile();
             }
@@ -73,7 +83,7 @@ public class MFileWriter implements MThreadAIP {
 
     public void createLogFile() throws IOException {
         if (this.logDir == null || this.logName == null) {
-            throw new IOException("��־Ŀ¼Ϊ�ջ���־�ļ���Ϊ��.");
+            throw new IOException("日志目录为空或日志文件名为空.");
         }
         if (!this.logDir.exists()) {
             this.logDir.mkdir();
@@ -102,14 +112,14 @@ public class MFileWriter implements MThreadAIP {
             isNeedClose = newFile.equals(this.logFile);
             this.logFile = newFile;
         } catch (Throwable e) {
-            // ����ط����ܵ���printStackTrace��System.out����System.err��ֻ�����������쳣�����߲����κδ���.
+            // 这个地方不能调用printStackTrace，System.out或者System.err，只可以向外抛异常，或者不做任何处理.
             this.writer = oldWriter;
         }
         try {
             if (isNeedClose)
                 oldWriter.close();
         } catch (Throwable e) {
-            // ����ط����ܵ���printStackTrace��System.out����System.err��ֻ�����������쳣�����߲����κδ���.
+            // 这个地方不能调用printStackTrace，System.out或者System.err，只可以向外抛异常，或者不做任何处理.
         }
     }
 
@@ -131,7 +141,7 @@ public class MFileWriter implements MThreadAIP {
                     }
                 }
             } catch (NumberFormatException e) {
-                // ����ط����ܵ���printStackTrace��System.out����System.err
+                // 这个地方不能调用printStackTrace，System.out或者System.err
                 continue;
             }
         }
