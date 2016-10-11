@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component LANGUAGE_LEVEL="JDK_1_7" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/target/test-classes"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test/java"/>
+		<excludeFolder url="file://$MODULE_DIR$/target"/>
+	</contentEntry>
+	<lib name="Maven: beautyeye_inf:beautyeye_inf:1.0" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/beautyeye_lnf.jar!/"/>
+	</lib>
+	<lib name="Maven: oracle:oracle-ojdbc:1.0" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libs/ojdbc6-11.2.0.3.0.jar!/"/>
+	</lib>
+	<levels>
+		<level name="Maven: javax.servlet:javax.servlet-api:3.1.0" value="project"/>
+		<level name="Maven: log4j:log4j:1.2.17" value="project"/>
+		<level name="Maven: commons-dbcp:commons-dbcp:1.4" value="project"/>
+		<level name="Maven: commons-pool:commons-pool:1.5.4" value="project"/>
+		<level name="Maven: org.apache.logging.log4j:log4j-api:2.0-beta9" value="project"/>
+	</levels>
+</component>
