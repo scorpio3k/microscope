@@ -7,22 +7,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.scorpio.microscope.enginex.core.Setting;
 
 
-/**
- * <p>
- * Title:
- * </p>
- * <p>
- * <p>
- * Description:
- * </p>
- * <p>
- * <p>
- * Company: �����ź��ǿƼ��ɷ����޹�˾
- * </p>
- *
- * @author tzy
- * @since��2013-10-12 ����05:13:14
- */
 public class MDbcpDataSource extends BasicDataSource {
     public Connection getConnection() throws SQLException {
         Connection conn = super.getConnection();

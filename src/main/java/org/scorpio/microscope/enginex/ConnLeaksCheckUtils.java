@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-
 /**
  * 数据库连接泄露检测工具
  *
